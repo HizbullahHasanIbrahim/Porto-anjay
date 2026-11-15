@@ -1,24 +1,25 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { terminalCommands } from '@/data/portfolioSystemData';
 import { TerminalCommandName, TerminalHistoryEntry } from '@/types/system';
 
 export function MiniTerminalCLI() {
   const [input, setInput] = useState('');
-  const [history, setHistory] = useState<TerminalHistoryEntry[]>([]);
+  const [history, setHistory] = useState<TerminalHistoryEntry[]>([
+    {
+      id: 'init',
+      timestamp: '00:00:00',
+      rawInput: 'boot',
+      outputFormat: 'ASCII',
+      renderedOutput: 'Welcome to Hizbullah Portfolio CLI v1.0.0\nType "help" or click quick chips below.'
+    }
+  ]);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setHistory([
-      {
-        id: 'init',
-        timestamp: new Date().toLocaleTimeString(),
-        rawInput: 'boot',
-        outputFormat: 'ASCII',
-        renderedOutput: 'Welcome to Hizbullah Portfolio CLI v1.0.0\nType "help" for a list of available commands.'
-      }
-    ]);
-  }, []);
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [history]);
 
   const handleCommand = (cmdStr: string) => {
     const cleanCmd = cmdStr.trim().toLowerCase() as TerminalCommandName;
@@ -57,12 +58,25 @@ export function MiniTerminalCLI() {
   };
 
   return (
-    <div className="bg-black border border-zinc-800 rounded-lg overflow-hidden font-mono text-xs flex flex-col h-[400px]">
-      <div className="bg-zinc-900 border-b border-zinc-800 px-4 py-2 flex items-center gap-2">
-        <div className="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
-        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
-        <div className="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
-        <span className="text-[10px] text-zinc-500 ml-2">hizbullah@uad-portfolio:~</span>
+    <div className="bg-black border border-zinc-800 rounded-lg overflow-hidden font-mono text-xs flex flex-col h-[420px]">
+      <div className="bg-zinc-900 border-b border-zinc-800 px-4 py-2 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
+          <span className="text-[10px] text-zinc-500 ml-2">hizbullah@uad-portfolio:~</span>
+        </div>
+        <div className="flex gap-1.5">
+          {['help', 'projects', 'techstack', 'education', 'clear'].map(chip => (
+            <button
+              key={chip}
+              onClick={() => handleCommand(chip)}
+              className="px-2 py-0.5 bg-zinc-800 hover:bg-emerald-500 hover:text-zinc-950 text-zinc-300 rounded text-[10px] transition-colors"
+            >
+              {chip}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="p-4 flex-1 overflow-y-auto space-y-4">
@@ -77,6 +91,7 @@ export function MiniTerminalCLI() {
             </pre>
           </div>
         ))}
+        <div ref={bottomRef} />
       </div>
 
       <div className="p-2 border-t border-zinc-800 bg-zinc-950 flex items-center gap-2">
@@ -87,6 +102,7 @@ export function MiniTerminalCLI() {
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleCommand(input)}
           placeholder="type a command (e.g. 'help')..."
+          aria-label="Terminal command input"
           className="bg-transparent border-none outline-none text-zinc-200 w-full placeholder:text-zinc-700 text-xs"
         />
       </div>

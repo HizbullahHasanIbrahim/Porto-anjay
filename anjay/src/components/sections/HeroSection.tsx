@@ -1,7 +1,6 @@
 import React from 'react';
 import { StatusBadge } from '@/components/ui/SystemUI';
 import { profileData } from '@/data/portfolioSystemData';
-import { FileDown, ArrowRight } from 'lucide-react';
 
 export function HeroSection() {
   return (
@@ -28,14 +27,17 @@ export function HeroSection() {
         <div className="flex flex-wrap gap-4 pt-4">
           <a 
             href={profileData.links.cv} 
+            target="_blank" 
+            rel="noopener noreferrer"
             className="flex items-center gap-2 px-6 py-3 bg-zinc-100 text-zinc-950 font-bold rounded-lg hover:bg-white transition-all group"
           >
-            <FileDown size={18} />
+            <span className="font-mono text-sm">[CV]</span>
             Download CV (PDF)
           </a>
           <a 
             href={profileData.links.github} 
             target="_blank" 
+            rel="noopener noreferrer"
             className="flex items-center gap-2 px-6 py-3 bg-zinc-900 border border-zinc-800 text-zinc-100 font-bold rounded-lg hover:border-zinc-700 transition-all"
           >
             <span className="font-mono text-sm">[GitHub]</span>

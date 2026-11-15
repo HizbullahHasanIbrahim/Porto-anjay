@@ -26,7 +26,8 @@ export function SectionHeader({ title, index }: { title: string; index: string }
     <div className="flex items-center gap-4 mb-8">
       <span className="text-zinc-600 font-mono text-sm">[{index}]</span>
       <h2 className="text-2xl font-bold tracking-tight text-zinc-100 uppercase italic">
-        // {title}
+        {/* Section Title */}
+        {`// ${title}`}
       </h2>
       <div className="h-px flex-1 bg-zinc-800"></div>
     </div>

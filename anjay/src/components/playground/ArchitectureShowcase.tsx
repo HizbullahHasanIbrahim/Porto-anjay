@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { architectureNodes, architectureEdges, simulationScenarios } from '@/data/portfolioSystemData';
+import { architectureNodes, simulationScenarios } from '@/data/portfolioSystemData';
 import { Monitor, Cpu, Database, ShieldCheck, Layers, Zap, Play } from 'lucide-react';
 
 const icons = { Monitor, Cpu, Database, ShieldCheck, Layers, Zap };
 
 export function ArchitectureShowcase() {
-  const [currentScenario, setCurrentScenario] = useState(simulationScenarios[0]);
+  const [currentScenario] = useState(simulationScenarios[0]);
   const [stepIndex, setStepIndex] = useState(-1);
   const [logs, setLogs] = useState<string[]>(["System initialized. Ready for simulation."]);
 
